@@ -129,6 +129,8 @@ export class IngresoComponent implements OnInit {
   public nowDate = new Date();
   public anio!: number;
 
+  public contadorIngreso: number = 1;
+
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -235,7 +237,6 @@ export class IngresoComponent implements OnInit {
       users_id: this.usuario.sub
     }
 
-    console.log(formData);
     this.visitasServices.storeVisita(formData)
       .subscribe({
         next: ({ status, message }) => {
@@ -356,8 +357,6 @@ export class IngresoComponent implements OnInit {
 
           this.cantVisitas = cantidad;
           this.cantCurso = cantCurso;
-
-          console.log(this.cantVisitas);
 
           const {
             data,
@@ -600,11 +599,6 @@ export class IngresoComponent implements OnInit {
             .subscribe({
               next: (({ historialreal }) => {
                 this.dataHistorialReal = historialreal;
-                console.log(this.dataHistorialReal[0].nombres);
-
-                this.formulario.patchValue({
-                  nombres: this.dataHistorialReal[0].nombres
-                });
 
                 if (this.dataHistorialReal.length === 0) {
                   this.visitasRegistradas = 'No tiene visitas registradas'
@@ -612,6 +606,9 @@ export class IngresoComponent implements OnInit {
                 } else {
                   this.visitasRegistradas = 'Tiene visitas registradas'
                   this.color = true;
+                  this.formulario.patchValue({
+                    nombres: this.dataHistorialReal[0].nombres
+                  });
 
                   // const lugarFieldElement = document.getElementById('lugar');
 
@@ -630,13 +627,87 @@ export class IngresoComponent implements OnInit {
 
 
   /**
-   * pageChange(event)  
-   */
+ * submitModificar
+ */
+  public salidaVisita(id: number, carnet: any, nombres: any) {
+
+    const formData = {};
+
+    this.cargando = true;
+    this.btnSave = false;
+
+    // Swal.fire({
+    //   title: 'Finalizar Visita',
+    //   text: `Se registrara la salida de: CI: ${carnet}, Nombres: ${nombres}`,
+    //   icon: 'warning',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Si, Registrar Salida',
+    //   cancelButtonText: 'Cancelar'
+
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+
+    this.visitasServices.updateFechaSalida(formData, id)
+      .subscribe(({ message }) => {
+
+        this.indexVisitas();
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: `${message}`,
+          showConfirmButton: false,
+          timer: 1500
+        })
+
+
+      }, (err) => {
+        console.log(err);
+        Swal.fire('Error', err.error.message, 'error')
+        this.cargando = false;
+        this.btnSave = true;
+      }, () => {
+        this.cargando = false;
+        this.btnSave = true;
+      });
+
+
+    //   }
+    // })
+
+
+
+  }
+
+  /**
+    * eliminarLocalStorage
+    */
+  public eliminarLocalStorage() {
+    localStorage.removeItem('textoBuscar');
+    localStorage.removeItem('items');
+    localStorage.removeItem('position');
+  }
+
+
+  /**
+ * pageChange(event)  
+ */
   public pageChange(event: any) {
+
+    const pagina: number = 10;
 
     this.dataVisitas = [];
     this.cargando = true;
     this.p = event;
+
+    console.log(this.p);
+
+    if (this.p === 1) {
+      this.contadorIngreso = 1;
+    } else {
+      this.contadorIngreso = this.p * pagina;
+    }
 
     // Condicion si es para el textoBuscar
     const textoBuscar = localStorage.getItem('textoBuscar');
@@ -737,68 +808,6 @@ export class IngresoComponent implements OnInit {
         })
     }
   }
-
-  /**
- * submitModificar
- */
-  public salidaVisita(id: number, carnet: any, nombres: any) {
-
-    const formData = {};
-
-    this.cargando = true;
-    this.btnSave = false;
-
-    Swal.fire({
-      title: 'Finalizar Visita',
-      text: `Se registrara la salida de: CI: ${carnet}, Nombres: ${nombres}`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, Registrar Salida',
-      cancelButtonText: 'Cancelar'
-
-    }).then((result) => {
-      if (result.isConfirmed) {
-
-        this.visitasServices.updateFechaSalida(formData, id)
-          .subscribe(({ message }) => {
-
-            this.indexVisitas();
-            Swal.fire(
-              'Registrado!',
-              `${message}`,
-              'success'
-            )
-
-
-          }, (err) => {
-            console.log(err);
-            Swal.fire('Error', err.error.message, 'error')
-            this.cargando = false;
-            this.btnSave = true;
-          }, () => {
-            this.cargando = false;
-            this.btnSave = true;
-          });
-
-
-      }
-    })
-
-
-
-  }
-
-  /**
-    * eliminarLocalStorage
-    */
-  public eliminarLocalStorage() {
-    localStorage.removeItem('textoBuscar');
-    localStorage.removeItem('items');
-    localStorage.removeItem('position');
-  }
-
 
 }
 

@@ -216,22 +216,34 @@
                 <th style="width: 2%;" class="border">#</th>
                 <th style="width: 10%;" class="border">Carnet</th>
                 <th style="width: 15%;" class="border">Nombres</th>
-                <th style="width: 20%;" class="border">Lugar</th>
-                <th style="width: 15%;" class="border">Fecha Ingreso</th>
-                <th style="width: 15%;" class="border">Fecha Salida</th>
-                <th style="width: 23%;" class="border">Acciones</th>
+                <th style="width: 26%;" class="border">Lugar</th>
+                <th style="width: 17%;" class="border">Fecha Ingreso</th>
+                <th style="width: 17%;" class="border">Fecha Salida</th>
+                <th style="width: 13%;" class="border">Acciones</th>
               </tr>
             </thead>
             <tbody class="table-cuerpo">
               <tr *ngFor="let item of this.dataVisitas | paginate: { itemsPerPage: this.per_page, currentPage: this.p,
                 totalItems:this.total, id: 'paginate_one' }; let index = index" class=" table-cuerpo__datos">
-                <td>{{ index+1 }}</td>
+
+                <!-- Numeracion -->
+                <td *ngIf="this.p===1;else notP">
+                  {{ index+1 }}
+                </td>
+                <ng-template #notP>
+                  <td *ngIf="index+1 === 10; else notIndex">{{ this.p*10 + 10 }}</td>
+                  <ng-template #notIndex>
+                    <td>{{ this.p }}{{ index+1 }}</td>
+                  </ng-template>
+                </ng-template>
+
                 <td>{{ item.carnet }}</td>
                 <td>{{ item.nombres }}</td>
                 <td>{{ item.lugar }}</td>
                 <td>{{ item.created_at | date: 'short' }}</td>
                 <td *ngIf="item.fecha_salida === null || item.fecha_salida === '' ; else notFechaSalida ">
-                  <span class="text-success">En curso</span>
+                  <span class="text-success"><button (click)="this.salidaVisita(item.id,item.carnet,item.nombres)"
+                      class="btn btn-danger btn-sm">Finalizar visita</button> </span>
                 </td>
                 <ng-template #notFechaSalida>
                   <td>{{ item.fecha_salida | date: 'short' }}</td>
@@ -250,16 +262,16 @@
                   </button>
 
 
-                  <button *ngIf="item.fecha_salida === null || item.fecha_salida === ''"
-                    class="btn-acciones--margen btn btn-success btn-sm custom-link"
+                  <!-- <button *ngIf="item.fecha_salida === null || item.fecha_salida === ''"
+                    class="btn-acciones--margen btn btn-danger btn-sm custom-link"
                     (click)="this.salidaVisita(item.id,item.carnet,item.nombres)" title="Finalizar Visita">
                     <i class="fas fa-check"></i>
-                  </button>
+                  </button> -->
 
-                  <button *ngIf="item.fecha_salida" class="btn-acciones--margen btn btn-success btn-sm disabled-link"
+                  <!-- <button *ngIf="item.fecha_salida" class="btn-acciones--margen btn btn-danger btn-sm disabled-link"
                     disabled>
                     <i class="fas fa-check"></i>
-                  </button>
+                  </button> -->
 
                   <a [routerLink]="[ '/inicio/listahistorial', item.id ]"
                     class="btn-acciones--margen btn btn-info btn-sm custom-link" title="Ver Historial">
@@ -347,15 +359,24 @@
                   <th style="width: 10%;" class="border">Carnet</th>
                   <th style="width: 15%;" class="border">Nombres</th>
                   <th style="width: 20%;" class="border">Lugar</th>
-                  <th style="width: 15%;" class="border">Fecha Ingreso</th>
-                  <th style="width: 15%;" class="border">Fecha Salida</th>
-                  <th style="width: 23%;" class="border">Acciones</th>
+                  <th style="width: 20%;" class="border">Fecha Ingreso</th>
+                  <th style="width: 20%;" class="border">Fecha Salida</th>
+                  <th style="width: 13%;" class="border">Acciones</th>
                 </tr>
               </thead>
               <tbody class="table-cuerpo">
                 <tr *ngFor="let item of this.dataVisitas | paginate: { itemsPerPage: this.per_page, currentPage: this.p,
                 totalItems:this.total, id: 'paginate_one' }; let index = index" class=" table-cuerpo__datos">
-                  <td>{{ index+1 }}</td>
+                  <!-- Numeracion -->
+                  <td *ngIf="this.p===1;else notP">
+                    {{ index+1 }}
+                  </td>
+                  <ng-template #notP>
+                    <td *ngIf="index+1 === 10; else notIndex">{{ this.p*10 + 10 }}</td>
+                    <ng-template #notIndex>
+                      <td>{{ this.p }}{{ index+1 }}</td>
+                    </ng-template>
+                  </ng-template>
                   <td>{{ item.carnet }}</td>
                   <td>{{ item.nombres }}</td>
                   <td>{{ item.lugar }}</td>
@@ -379,16 +400,16 @@
                     </button>
 
 
-                    <button *ngIf="item.fecha_salida === null || item.fecha_salida === ''"
-                      class="btn-acciones--margen btn btn-success btn-sm custom-link disabled-link"
+                    <!-- <button *ngIf="item.fecha_salida === null || item.fecha_salida === ''"
+                      class="btn-acciones--margen btn btn-danger btn-sm custom-link disabled-link"
                       title="Finalizar Visita" disabled>
                       <i class="fas fa-check"></i>
-                    </button>
+                    </button> -->
 
-                    <button *ngIf="item.fecha_salida" class="btn-acciones--margen btn btn-success btn-sm disabled-link"
+                    <!-- <button *ngIf="item.fecha_salida" class="btn-acciones--margen btn btn-danger btn-sm disabled-link"
                       disabled>
                       <i class="fas fa-check"></i>
-                    </button>
+                    </button> -->
 
                     <a class="btn-acciones--margen btn btn-info btn-sm custom-link"
                       (click)="this.modificarVisita(item.id)" title="Ver Historial">

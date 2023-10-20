@@ -23,7 +23,7 @@ export class BreadcrumbsComponent {
       .subscribe(({ titulo, titulo_dos }) => {
         this.titulo = titulo;
         this.titulo_dos = titulo_dos;
-        document.title = `Test-${titulo}`;
+        document.title = `GADC-${titulo}`;
       })
   }
 
