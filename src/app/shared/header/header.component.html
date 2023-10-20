@@ -1,0 +1,30 @@
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand table-header--modal">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link text-white" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+    </ul>
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Notifications Dropdown Menu -->
+      <li class="nav-item dropdown text-white">
+        <a class="nav-link text-white" data-toggle="dropdown" href="#">
+          <i class="far fa-user"></i>
+          <span class="ml-2">{{ this.usuario.nombres }}</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right animated fadeIn fast">
+          <span class="dropdown-item dropdown-header text-uppercase">Menu Perfil</span>
+          <div class="dropdown-divider"></div>
+
+          <a class="dropdown-item text-uppercase" [routerLink]="[ 'perfil']">Perfil de usuario</a>
+
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item dropdown-footer text-uppercase puntero" (click)="this.logout()"><i
+              class="fa fa-power-off"></i> Cerrar sesión</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->

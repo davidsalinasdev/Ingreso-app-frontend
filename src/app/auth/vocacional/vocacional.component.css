@@ -1,0 +1,111 @@
+.bg-primary--oscuro {
+  background-color: rgba(10, 51, 92, .84);
+}
+
+.contenedor-formulario {
+  margin-top: 2rem;
+}
+
+.formulario {
+  /* border: 0.1rem solid#87949e; */
+  border-radius: 0.5rem;
+
+  box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+  background-color: #ffffffff;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+@media only screen and (min-width: 576px) {
+  .mat-radio-button~.mat-radio-button {
+    margin-left: 16px;
+  }
+}
+
+.parpadea {
+
+  animation-name: parpadeo;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+
+  -webkit-animation-name: parpadeo;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+}
+
+@-moz-keyframes parpadeo {
+  0% {
+    opacity: 1.0;
+  }
+
+  50% {
+    opacity: 0.0;
+  }
+
+  100% {
+    opacity: 1.0;
+  }
+}
+
+@-webkit-keyframes parpadeo {
+  0% {
+    opacity: 1.0;
+  }
+
+  50% {
+    opacity: 0.0;
+  }
+
+  100% {
+    opacity: 1.0;
+  }
+}
+
+@keyframes parpadeo {
+  0% {
+    opacity: 1.0;
+  }
+
+  50% {
+    opacity: 0.0;
+  }
+
+  100% {
+    opacity: 1.0;
+  }
+}
+
+.btn-registro {
+  display: block;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .btn-registro {
+    display: initial;
+    width: auto;
+  }
+}
+
+::ng-deep .p-dropdown {
+  width: 100%;
+}
+
+.mat-mdc-radio-checked {
+  color: #da4fb7 !important;
+}
+
+.datos-test {
+  margin-top: 140px;
+}
+
+@media (min-width: 367px) {
+  .datos-test {
+    margin-top: 100px;
+  }
+
+}

@@ -1,0 +1,532 @@
+<div *ngIf="this.rol==='Usuario'; else notUsuario" class="row animated fadeIn fast">
+
+
+  <div class="col-12 col-md-5">
+
+    <div class="card p-3">
+
+      <div class="card form-ingreso">
+        <div class="card-header table-header--card">
+          Formulario de registro de ingreso de personas
+        </div>
+        <div class="card-body">
+          <form #formDirective="ngForm" [formGroup]="this.formulario" class="ps-4  pe-4 pb-0" (ngSubmit)="submit()">
+
+            <!-- Seccion 1 -->
+            <div class="row">
+
+              <div class="col-12">
+
+                <div class="row">
+                  <!-- Carnet identidad -->
+                  <div class=" col-12 col-md-4 d-flex flex-column gap-1">
+                    <label for="carnet" style="font-size: 14px;">Carnet:<span class="text-danger">*</span></label>
+                    <input type="text" pInputText class="p-inputtext-sm" id="carnet"
+                      placeholder="Ingrese el nro. de carnet" formControlName="carnet"
+                      [(ngModel)]="this.searchTermCarnet" #texto (keyup)="searchTermCarnet$.next(texto.value)">
+                    <!-- Validacion -->
+                    <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                    <span *ngIf="this.carnet?.invalid && (this.carnet?.dirty || this.carnet?.touched)"
+                      class="texto-tam">
+                      <!-- Errores con expresiones regulares -->
+                      <div *ngIf="this.carnet?.hasError('required')" class="animated fadeIn fast text-danger">
+                        Este campo es requerido.
+                      </div>
+                      <div *ngIf="this.carnet?.hasError('maxlength')" class="animated fadeIn fast text-danger">
+                        Este campo solo acepta solo 12 letras.
+                      </div>
+                    </span>
+                  </div>
+
+                  <!-- Nombre completo -->
+                  <div class=" col-12 col-md-8 form-group d-flex flex-column gap-1">
+                    <label for="nombres" style="font-size: 14px;">Nombre completo:<span
+                        class="text-danger">*</span></label>
+                    <input type="text" pInputText class="p-inputtext-sm" id="nombres"
+                      placeholder="Ingrese su nombre completo" formControlName="nombres">
+                    <!-- Validacion -->
+                    <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                    <span *ngIf="this.nombres?.invalid && (this.nombres?.dirty || this.nombres?.touched)"
+                      class="texto-tam">
+                      <!-- Errores con expresiones regulares -->
+                      <div *ngIf="this.nombres?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                        Este campo es requerido.
+                      </div>
+                      <div *ngIf="this.nombres?.hasError('maxlength')" class="animated fadeIn fast text-danger" id="">
+                        Este campo solo acepta solo 70 letras.
+                      </div>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Lugar donde se dirije -->
+                <div class="form-group d-flex flex-column gap-1">
+                  <label for="lugar" style="font-size: 14px;">Lugar donde se dirije:<span
+                      class="text-danger">*</span></label>
+                  <input type="text" pInputText class="p-inputtext-sm" id="lugar"
+                    placeholder="Ingrese al lugar que se dirige" formControlName="lugar">
+                  <!-- Validacion -->
+                  <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                  <span *ngIf="this.lugar?.invalid && (this.lugar?.dirty || this.lugar?.touched)" class="texto-tam">
+                    <!-- Errores con expresiones regulares -->
+                    <div *ngIf="this.lugar?.hasError('required')" class="animated fadeIn fast text-danger">
+                      Este campo es requerido.
+                    </div>
+
+                    <div *ngIf="this.lugar?.hasError('maxlength')" class="animated fadeIn fast text-danger">
+                      Este campo solo acepta solo 250 letras.
+                    </div>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="save-datos">
+
+              <p class="text-right mt-1 mb-0">
+                Los campos con ( <span class="text-danger">*</span> ) son obligatorios
+              </p>
+
+              <div class="btn-guardar-cancelar">
+                <div class="">
+                  <button type="button" class="btn btn-danger waves-effect text-left text-upercase"
+                    data-dismiss="modal">
+                    Cancelar
+                  </button>
+                </div>
+                <div *ngIf="this.btnSave; else notBtnSave">
+                  <button type="submit" class="btn btn-primary waves-effect text-uppercase btn-save"
+                    [disabled]="this.formulario.invalid">
+                    Guardar
+                  </button>
+                </div>
+
+                <ng-template #notBtnSave>
+                  <button type="submit" class="btn btn-primary waves-effect text-uppercase btn-save"
+                    [disabled]="this.notBtnSave">
+                    <span class="ms-2">Espere por favor</span>
+                  </button>
+                </ng-template>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="creacion">
+          <div class="titulos-tabla">
+            <h5>Historial de visitas</h5>
+          </div>
+          <div class="">
+            <!-- Condicional de colores -->
+            <p [ngClass]="{'textsuccess': this.color, 'textdanger': !this.color}">
+              {{ this.visitasRegistradas }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Tabla de datos -->
+        <!-- <div *ngIf="!this.cargando" class="fadeIn fast table-shadow"> -->
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="table-header bg-gradient-info">
+              <tr class="table-header__encabezado">
+                <th style="width: 2%;" class="border">#</th>
+                <th style="width: 10%;" class="border">Carnet</th>
+                <th style="width: 15%;" class="border">Nombres</th>
+                <th style="width: 20%;" class="border">Lugar</th>
+                <th style="width: 15%;" class="border">Fecha Ingreso</th>
+                <th style="width: 15%;" class="border">Fecha Salida</th>
+              </tr>
+            </thead>
+            <tbody class="table-cuerpo">
+              <tr *ngFor="let item of this.dataHistorialReal; let index = index" class=" table-cuerpo__datos">
+                <td>{{ index+1 }}</td>
+                <td>{{ item.carnet }}</td>
+                <td>{{ item.nombres }}</td>
+                <td>{{ item.lugar }}</td>
+                <td>{{ item.created_at | date: 'short' }}</td>
+                <td *ngIf="item.fecha_salida === null || item.fecha_salida === '' ; else notFechaSalida ">
+                  <span class="text-success">En curso</span>
+                </td>
+                <ng-template #notFechaSalida>
+                  <td>{{ item.fecha_salida | date: 'short' }}</td>
+                </ng-template>
+              </tr>
+            </tbody>
+          </table>
+          <!-- Paginación de datos -->
+        </div>
+        <div *ngIf="this.color" class="text-danger" style="border-top: 1px solid rgb(189, 189, 189);">
+          Lista de ultimas 3 visitas.
+        </div>
+        <!-- </div> -->
+        <!-- FIN Tabla de datos -->
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-7">
+    <div class="card p-3">
+      <div class="card-body pt-0">
+
+        <div class="creacion">
+          <div class="titulos-tabla">
+            <h5 class="p-0">Lista de visitas registradas</h5>
+          </div>
+
+          <div class="">
+            <p>Visitas en Curso en Fecha Actual: <span class="text-success"
+                style="font-size: 1.5rem;">{{ this.cantCurso }}</span></p>
+          </div>
+
+          <div class="">
+            <p>Cantidad de Visitas en Fecha Actual: <span class="text-danger"
+                style="font-size: 1.5rem;">{{ this.cantVisitas }}</span></p>
+          </div>
+        </div>
+
+        <!-- Buscar -->
+        <div class="form-group d-flex flex-column gap-1">
+          <!-- <label for="buscar">Buscar:</label> -->
+          <input type="email" pInputText class="example-full-width p-inputtext-sm" id="buscar"
+            placeholder="Ingrese su busqueda" [(ngModel)]="this.searchTerm" #texto
+            (keyup)="searchTerm$.next(texto.value)">
+        </div>
+
+        <!-- Loading -->
+        <!-- <div *ngIf="this.cargando" class="row animated fadeIn fast">
+          <div class="col-12">
+            <div class="alert alert-secondary text-center">
+              <h4 class="alert-heading">Cargando</h4>
+              <i class="fas fa-spin fa-refresh fa-2x"></i>
+              <p class="mb-0">Por favor espere</p>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- Tabla de datos -->
+        <!-- <div *ngIf="!this.cargando" class="fadeIn fast table-shadow"> -->
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="table-header bg-gradient-indigo">
+              <tr class="table-header__encabezado">
+                <th style="width: 2%;" class="border">#</th>
+                <th style="width: 10%;" class="border">Carnet</th>
+                <th style="width: 15%;" class="border">Nombres</th>
+                <th style="width: 20%;" class="border">Lugar</th>
+                <th style="width: 15%;" class="border">Fecha Ingreso</th>
+                <th style="width: 15%;" class="border">Fecha Salida</th>
+                <th style="width: 23%;" class="border">Acciones</th>
+              </tr>
+            </thead>
+            <tbody class="table-cuerpo">
+              <tr *ngFor="let item of this.dataVisitas | paginate: { itemsPerPage: this.per_page, currentPage: this.p,
+                totalItems:this.total, id: 'paginate_one' }; let index = index" class=" table-cuerpo__datos">
+                <td>{{ index+1 }}</td>
+                <td>{{ item.carnet }}</td>
+                <td>{{ item.nombres }}</td>
+                <td>{{ item.lugar }}</td>
+                <td>{{ item.created_at | date: 'short' }}</td>
+                <td *ngIf="item.fecha_salida === null || item.fecha_salida === '' ; else notFechaSalida ">
+                  <span class="text-success">En curso</span>
+                </td>
+                <ng-template #notFechaSalida>
+                  <td>{{ item.fecha_salida | date: 'short' }}</td>
+                </ng-template>
+                <td class="btn-acciones">
+
+                  <button *ngIf="item.fecha_salida === null || item.fecha_salida === ''"
+                    class="btn btn-warning btn-sm custom-link" (click)="this.modificarVisita(item.id)"
+                    title="Modificar Datos">
+                    <i class="fas fa-pen"></i>
+                  </button>
+
+
+                  <button *ngIf="item.fecha_salida" class="btn btn-warning btn-sm disabled-link" disabled>
+                    <i class="fas fa-pen"></i>
+                  </button>
+
+
+                  <button *ngIf="item.fecha_salida === null || item.fecha_salida === ''"
+                    class="btn-acciones--margen btn btn-success btn-sm custom-link"
+                    (click)="this.salidaVisita(item.id,item.carnet,item.nombres)" title="Finalizar Visita">
+                    <i class="fas fa-check"></i>
+                  </button>
+
+                  <button *ngIf="item.fecha_salida" class="btn-acciones--margen btn btn-success btn-sm disabled-link"
+                    disabled>
+                    <i class="fas fa-check"></i>
+                  </button>
+
+                  <a [routerLink]="[ '/inicio/listahistorial', item.id ]"
+                    class="btn-acciones--margen btn btn-info btn-sm custom-link" title="Ver Historial">
+                    <i class="fas fa-eye"></i>
+                  </a>
+
+
+
+                  <a *ngIf="this.rol==='Administrador'"
+                    class="btn-acciones--margen btn btn-danger btn-sm puntero custom-link"
+                    (click)="this.destroyVisita(item.id, item.nombres)" title="Eliminar Visita">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- Paginación de datos -->
+          <hr>
+          <div class="paginacion d-flex flex-nowrap justify-content-end pr-3">
+            <pagination-controls class="my-pagination" (pageChange)="this.pageChange($event)" previousLabel="Anterior"
+              nextLabel="Siguiente" [maxSize]="this.per_page" id="paginate_one">
+            </pagination-controls>
+            <p class="pt-1 paginacion__cantitems">Items: {{ this.total }}</p>
+          </div>
+        </div>
+        <!-- </div> -->
+        <!-- FIN Tabla de datos -->
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<ng-template #notUsuario>
+  <div class="row animated fadeIn fast">
+
+    <div class="col-12">
+      <div class="card p-3">
+        <div class="card-body pt-0">
+
+          <div class="creacion">
+            <div class="titulos-tabla">
+              <h5 class="p-0">Lista de visitas registradas</h5>
+            </div>
+
+            <div class="">
+              <p>Visitas en Curso en Fecha Actual: <span class="text-success"
+                  style="font-size: 1.5rem;">{{ this.cantCurso }}</span></p>
+            </div>
+
+            <div class="">
+              <p>Cantidad de Visitas en Fecha Actual: <span class="text-danger"
+                  style="font-size: 1.5rem;">{{ this.cantVisitas }}</span></p>
+            </div>
+          </div>
+
+          <!-- Buscar -->
+          <div class="form-group d-flex flex-column gap-1">
+            <!-- <label for="buscar">Buscar:</label> -->
+            <input type="email" pInputText class="example-full-width p-inputtext-sm" id="buscar"
+              placeholder="Ingrese su busqueda" [(ngModel)]="this.searchTerm" #texto
+              (keyup)="searchTerm$.next(texto.value)">
+          </div>
+
+          <!-- Loading -->
+          <!-- <div *ngIf="this.cargando" class="row animated fadeIn fast">
+          <div class="col-12">
+            <div class="alert alert-secondary text-center">
+              <h4 class="alert-heading">Cargando</h4>
+              <i class="fas fa-spin fa-refresh fa-2x"></i>
+              <p class="mb-0">Por favor espere</p>
+            </div>
+          </div>
+        </div> -->
+
+          <!-- Tabla de datos -->
+          <!-- <div *ngIf="!this.cargando" class="fadeIn fast table-shadow"> -->
+          <div class="table-responsive">
+            <table class="table">
+              <thead class="table-header bg-gradient-indigo">
+                <tr class="table-header__encabezado">
+                  <th style="width: 2%;" class="border">#</th>
+                  <th style="width: 10%;" class="border">Carnet</th>
+                  <th style="width: 15%;" class="border">Nombres</th>
+                  <th style="width: 20%;" class="border">Lugar</th>
+                  <th style="width: 15%;" class="border">Fecha Ingreso</th>
+                  <th style="width: 15%;" class="border">Fecha Salida</th>
+                  <th style="width: 23%;" class="border">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="table-cuerpo">
+                <tr *ngFor="let item of this.dataVisitas | paginate: { itemsPerPage: this.per_page, currentPage: this.p,
+                totalItems:this.total, id: 'paginate_one' }; let index = index" class=" table-cuerpo__datos">
+                  <td>{{ index+1 }}</td>
+                  <td>{{ item.carnet }}</td>
+                  <td>{{ item.nombres }}</td>
+                  <td>{{ item.lugar }}</td>
+                  <td>{{ item.created_at | date: 'short' }}</td>
+                  <td *ngIf="item.fecha_salida === null || item.fecha_salida === '' ; else notFechaSalida ">
+                    <span class="text-success">En curso</span>
+                  </td>
+                  <ng-template #notFechaSalida>
+                    <td>{{ item.fecha_salida | date: 'short' }}</td>
+                  </ng-template>
+                  <td class="btn-acciones">
+
+                    <button *ngIf="item.fecha_salida === null || item.fecha_salida === ''"
+                      class="btn btn-warning btn-sm custom-link disabled-link" disabled>
+                      <i class="fas fa-pen"></i>
+                    </button>
+
+
+                    <button *ngIf="item.fecha_salida" class="btn btn-warning btn-sm disabled-link" disabled>
+                      <i class="fas fa-pen"></i>
+                    </button>
+
+
+                    <button *ngIf="item.fecha_salida === null || item.fecha_salida === ''"
+                      class="btn-acciones--margen btn btn-success btn-sm custom-link disabled-link"
+                      title="Finalizar Visita" disabled>
+                      <i class="fas fa-check"></i>
+                    </button>
+
+                    <button *ngIf="item.fecha_salida" class="btn-acciones--margen btn btn-success btn-sm disabled-link"
+                      disabled>
+                      <i class="fas fa-check"></i>
+                    </button>
+
+                    <a class="btn-acciones--margen btn btn-info btn-sm custom-link"
+                      (click)="this.modificarVisita(item.id)" title="Ver Historial">
+                      <i class="fas fa-eye"></i>
+                    </a>
+
+                    <a *ngIf="this.rol==='Administrador'"
+                      class="btn-acciones--margen btn btn-danger btn-sm puntero custom-link"
+                      (click)="this.destroyVisita(item.id, item.nombres)" title="Eliminar Visita">
+                      <i class="fas fa-trash"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- Paginación de datos -->
+            <hr>
+            <div class="paginacion d-flex flex-nowrap justify-content-end pr-3">
+              <pagination-controls class="my-pagination" (pageChange)="this.pageChange($event)" previousLabel="Anterior"
+                nextLabel="Siguiente" [maxSize]="this.per_page" id="paginate_one">
+              </pagination-controls>
+              <p class="pt-1 paginacion__cantitems">Items: {{ this.total }}</p>
+            </div>
+          </div>
+          <!-- </div> -->
+          <!-- FIN Tabla de datos -->
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</ng-template>
+
+
+<!-- Modal editar usuarios -->
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;"
+  aria-hidden="true" id="myModal_editar_visita">
+  <form #formDirective="ngForm" [formGroup]="this.formularioModificar" class="ps-4 pt-4 pe-4 pb-0"
+    (ngSubmit)="submitModificar()">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-danger contenedor-header">
+          <h5 class="modal-title text-white text-uppercase" id="myLargeModalLabel">Modificar datos de visitante</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <!-- Seccion 1 -->
+          <div class="row">
+
+            <div class="col-12">
+
+
+              <!-- Carnet -->
+              <div class="form-group d-flex flex-column gap-1">
+                <label for="carnetM">Carnet:<span class="text-danger">*</span></label>
+                <input type="text" pInputText class="p-inputtext-sm" id="carnetM"
+                  placeholder="Ingrese un nro. de carnet" formControlName="carnetM">
+                <!-- Validacion -->
+                <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                <span *ngIf="this.carnetM?.invalid && (this.carnetM?.dirty || this.carnetM?.touched)" class="texto-tam">
+                  <!-- Errores con expresiones regulares -->
+                  <div *ngIf="this.carnetM?.hasError('required')" class="animated fadeIn fast text-danger">
+                    Este campo es requerido.
+                  </div>
+
+                  <div *ngIf="this.carnetM?.hasError('maxlength')" class="animated fadeIn fast text-danger">
+                    Este campo solo acepta solo 70 letras.
+                  </div>
+                </span>
+              </div>
+
+              <!-- Nombre completo -->
+              <div class="form-group d-flex flex-column gap-1">
+                <label for="nombresM">Nombre completo:<span class="text-danger">*</span></label>
+                <input type="text" pInputText class="p-inputtext-sm" id="nombresM"
+                  placeholder="Ingrese su nombre completo" formControlName="nombresM">
+                <!-- Validacion -->
+                <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                <span *ngIf="this.nombresM?.invalid && (this.nombresM?.dirty || this.nombresM?.touched)"
+                  class="texto-tam">
+                  <!-- Errores con expresiones regulares -->
+                  <div *ngIf="this.nombresM?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                    Este campo es requerido.
+                  </div>
+
+                  <div *ngIf="this.nombresM?.hasError('maxlength')" class="animated fadeIn fast text-danger" id="">
+                    Este campo solo acepta solo 70 letras.
+                  </div>
+                </span>
+              </div>
+
+              <!-- Nombre completo -->
+              <div class="form-group d-flex flex-column gap-1">
+                <label for="lugarM">Lugar:<span class="text-danger">*</span></label>
+                <input type="text" pInputText class="p-inputtext-sm" id="cargoM"
+                  placeholder="Ingrese el lugar al que se dirije la visita" formControlName="lugarM">
+                <!-- Validacion -->
+                <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                <span *ngIf="this.lugarM?.invalid && (this.lugarM?.dirty || this.lugarM?.touched)" class="texto-tam">
+                  <!-- Errores con expresiones regulares -->
+                  <div *ngIf="this.lugarM?.hasError('required')" class="animated fadeIn fast text-danger">
+                    Este campo es requerido.
+                  </div>
+
+                  <div *ngIf="this.lugarM?.hasError('maxlength')" class="animated fadeIn fast text-danger">
+                    Este campo solo acepta solo 70 letras.
+                  </div>
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+          <p class="text-right mt-1 mb-0">Los campos con ( <span class="text-danger">*</span> ) son obligatorios</p>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cancelar</button>
+          <div *ngIf="this.btnSave; else notBtnSave" class="">
+            <button type="submit" class="ms-2 btn btn-primary waves-effect"
+              [disabled]="this.formularioModificar.invalid">
+              Guardar
+            </button>
+          </div>
+
+          <ng-template #notBtnSave>
+            <button type="submit" class="ms-2 btn btn-primary waves-effect" [disabled]="this.notBtnSave">
+              <span class="ms-2">Espere por favor</span>
+            </button>
+          </ng-template>
+        </div>
+
+        <!-- /.modal-content -->
+      </div>
+    </div>
+  </form>
+  <!-- /.modal-dialog -->
+</div>
+<!-- Fin modal editar usuarios -->

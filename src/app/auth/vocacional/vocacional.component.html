@@ -1,0 +1,297 @@
+<!-- Nav-bar info -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary--oscuro fixed-top">
+
+  <a class="navbar-brand" href="#">
+    <img style="width: 100px;" src="../../../assets/dist/img/imgLogo2.png" alt="JackBolivia2000">
+  </a>
+
+  <span class="navbar-text text-uppercase">
+    Test de orientación vocacional
+  </span>
+
+</nav>
+
+<div *ngIf="this.showTest; else notShowTest" class="container-fluid animated fadeIn datos-test fast  mb-3" id="">
+  <div class="row contenedor-formulario justify-content-center" id="">
+    <div class="col-lg-8 p-4 formulario" id="">
+      <h3 class="text-center text-uppercase text-primary">Ficha personal del estudiante</h3>
+      <p class="text-center">POR FAVOR REGISTRA CORRECTAMENTE TUS DATOS</p>
+      <hr />
+
+
+      <!-- Datos personales del estudiante -->
+      <form [formGroup]="this.formulario" class="mt-4" (submit)="this.onSubmit($event)">
+
+        <h4 class="text-primary text-uppercase">Datos del estudiante</h4>
+
+        <div class="form-row" id="">
+
+          <div class="form-group col-12">
+
+            <label>Nombre completo:<span class="text-danger"> *</span></label><br />
+            <input type="text" style="width: 100%;" pInputText placeholder="Ingrese su nombre completo"
+              formControlName="nombres" />
+
+            <!-- Validacion -->
+            <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+            <span *ngIf="this.nombres?.invalid && (this.nombres?.dirty || this.nombres?.touched)" class="texto-tam">
+              <!-- Errores con expresiones regulares -->
+              <div *ngIf="this.nombres?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                Este campo es requerido.
+              </div>
+
+              <div *ngIf="this.nombres?.hasError('maxlength')" class="animated fadeIn fast text-danger" id="">
+                Este campo solo acepta solo 70 letras.
+              </div>
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="form-row">
+          <!-- Sexo -->
+          <div class="form-group col-12 col-md-5" id="">
+            <label>Sexo:<span class="text-danger"> *</span></label><br />
+
+            <p-dropdown [options]="options" optionLabel="label" optionValue="value"
+              placeholder="--Seleccione una opción--" formControlName="sexo">
+            </p-dropdown>
+
+
+            <!-- Validacion -->
+            <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+            <span *ngIf="this.sexo?.invalid && (this.sexo?.dirty || this.sexo?.touched)" class="texto-tam">
+              <!-- Errores con expresiones regulares -->
+              <div *ngIf="this.sexo?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                Este campo es requerido.
+              </div>
+
+            </span>
+
+          </div>
+
+          <!-- Edad -->
+          <div class="form-group col-12 col-md-7" id="">
+            <label>Edad:<span class="text-danger"> *</span></label><br />
+            <input type="number" style="width: 100%;" pInputText placeholder="Ingrese su edad" formControlName="edad" />
+
+            <!-- Validacion -->
+            <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+            <span *ngIf="this.edad?.invalid && (this.edad?.dirty || this.edad?.touched)" class="texto-tam">
+              <!-- Errores con expresiones regulares -->
+              <div *ngIf="this.edad?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                Este campo es requerido.
+              </div>
+
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="form-row">
+          <!-- phone -->
+          <div class="form-group col-12 col-md-5" id="">
+            <label>Número de celular:<span class="text-danger"> *</span></label><br />
+            <input type="number" style="width: 100%;" pInputText placeholder="Ingrese su número de celular"
+              formControlName="celular" />
+
+            <div *ngIf="this.celular?.invalid && (this.celular?.dirty || this.celular?.touched)">
+              <!-- Errores con expresiones regulares -->
+              <div *ngIf="this.celular?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                Este campo es requerido.
+              </div>
+              <div *ngIf="this.celular?.hasError('pattern')" class="animated fadeIn fast text-danger" id="">
+                Se acepta solo numeros entres 7 y 11 digitos.
+              </div>
+            </div>
+
+          </div>
+
+          <!-- email -->
+          <div class="form-group col-12 col-md-7" id="">
+            <label>Correo electronico:<span class="text-danger"> *</span></label><br />
+            <input type="email" style="width: 100%;" pInputText placeholder="Ingrese su correo email"
+              formControlName="email" />
+
+            <!-- Validacion -->
+            <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+            <div *ngIf="this.email?.invalid && (this.email?.dirty || this.email?.touched)">
+              <!-- Errores con expresiones regulares -->
+              <div *ngIf="this.email?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                Este campo es requerido.
+              </div>
+              <div *ngIf="this.email?.hasError('pattern')" class="animated fadeIn fast text-danger" id="">
+                Email no valido.
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+        <hr>
+        <h4 class="text-primary text-uppercase">Datos del padre o madre</h4>
+
+        <div class="form-row">
+
+          <!-- Name mom -->
+          <div class="form-group col-12 col-md-5" id="">
+            <label>Nombre de la madre:<span class="text-danger"> *</span></label><br />
+            <input type="text" style="width: 100%;" pInputText placeholder="Ingrese el nombre completo de su madre"
+              formControlName="nombre_madre" />
+
+            <!-- Validacion -->
+            <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+            <span *ngIf="this.nombre_madre?.invalid && (this.nombre_madre?.dirty || this.nombre_madre?.touched)"
+              class="texto-tam">
+              <div *ngIf="this.nombre_madre?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                Este campo es requerido.
+              </div>
+              <div *ngIf="this.nombre_madre?.hasError('maxlength')" class="animated fadeIn fast text-danger" id="">
+                Este campo solo acepta solo 70 letras.
+              </div>
+            </span>
+
+          </div>
+
+          <!-- celular -->
+          <div class="form-group col-12 col-md-7" id="">
+            <label>Celular:<span class="text-danger"> *</span></label><br />
+            <input type="number" style="width: 100%;" pInputText placeholder="Ingrese el número de celular de su madre"
+              formControlName="celular_madre" />
+
+            <!-- Validacion -->
+            <div *ngIf="this.celular_madre?.invalid && (this.celular_madre?.dirty || this.celular_madre?.touched)">
+              <div *ngIf="this.celular_madre?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                Este campo es requerido.
+              </div>
+              <div *ngIf="this.celular_madre?.hasError('pattern')" class="animated fadeIn fast text-danger" id="">
+                Se acepta solo numeros entres 7 y 11 digitos.
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="form-row">
+          <!-- Name padre -->
+          <div class="form-group col-12 col-md-5" id="">
+            <label>Nombre del padre:</label><br />
+            <input type="text" style="width: 100%;" pInputText placeholder="Ingrese el nombre completo de su padre"
+              formControlName="nombre_padre" />
+            <!-- Validacion -->
+            <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+            <span *ngIf="this.nombre_padre?.invalid && (this.nombre_padre?.dirty || this.nombre_padre?.touched)"
+              class="texto-tam">
+              <div *ngIf="this.nombre_padre?.hasError('maxlength')" class="animated fadeIn fast text-danger" id="">
+                Este campo solo acepta solo 70 letras.
+              </div>
+            </span>
+          </div>
+
+          <!-- celular -->
+          <div class="form-group col-12 col-md-7" id="">
+            <label>Celular:</label><br />
+            <input type="text" style="width: 100%;" pInputText placeholder="Ingrese el número de celular de su padre"
+              formControlName="celular_padre" />
+
+            <div *ngIf="this.celular_padre?.invalid && (this.celular_padre?.dirty || this.celular_padre?.touched)">
+              <div *ngIf="this.celular_padre?.hasError('pattern')" class="animated fadeIn fast text-danger" id="">
+                Se acepta solo numeros entres 7 y 11 digitos.
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <hr>
+
+        <div>
+
+          <div *ngIf="this.btnDatos; else notBtnDatos" class="">
+            <button type="submit" class="btn btn-primary mt-2 btn-registro text-uppercase"
+              [disabled]="this.formulario.invalid">
+              Guardar datos
+            </button>
+          </div>
+
+          <ng-template #notBtnDatos>
+            <button type="button" class="ms-2 btn btn-primary mt-2 btn-registro text-uppercase"
+              [disabled]="this.notBtnDatos">
+              <span class="ms-2">Espere por favor</span>
+            </button>
+          </ng-template>
+        </div>
+
+        <hr />
+        <p>
+          Los campos marcados con <span class="text-danger"> *</span> son
+          obligatorios.
+        </p>
+      </form>
+
+      <!-- Datos del test de preguntas -->
+
+
+    </div>
+  </div>
+</div>
+
+
+<ng-template #notShowTest>
+  <div class="container-fluid animated fadeIn fast datos-test mb-3" id="">
+    <div class="row contenedor-formulario justify-content-center" id="">
+      <div class="col-lg-8 p-4 formulario" id="">
+        <h3 class="text-center text-uppercase text-primary mb-4">test de orientación vocacional</h3>
+        <p class="text-uppercase mb-1">Lee atentamente cada pregunta.</p>
+        <p class="text-uppercase">Conteste <span class="font-weight-bold">SI</span> ó <span
+            class="font-weight-bold">NO</span> a cada
+          pregunta.</p>
+        <hr />
+
+        <!-- Las preguntas -->
+        <!-- Datos personales del estudiante -->
+        <form [formGroup]="formularioTest" class="mt-4" (submit)="onSubmitTest($event)">
+          <div *ngFor="let pregunta of preguntas; let i = index" [formGroupName]="'respuestas'" class="mb-4">
+            <p id="example-radio-group-label" class="mb-2">{{ pregunta }}</p>
+
+            <mat-radio-group [formControlName]="i.toString()">
+              <mat-radio-button class="example-margin ms-4 text-secondary" value="SI">SI</mat-radio-button>
+              <mat-radio-button class="example-margin ms-4 text-secondary" value="NO">NO</mat-radio-button>
+            </mat-radio-group>
+
+            <!-- Validación -->
+            <mat-hint
+              *ngIf="formularioTest.get('respuestas.' + i)?.invalid && (formularioTest.get('respuestas.' + i)?.dirty || formularioTest.get('respuestas.' + i)?.touched)"
+              class="animated fadeIn fast text-danger">
+              Este campo es requerido.
+            </mat-hint>
+          </div>
+          <hr>
+
+          <!-- Botones cancelar y submit -->
+          <div class="btn-crear">
+
+            <div *ngIf="this.btnGuardar; else notBtnGuardar" class="">
+              <button type="submit" class="ms-2 btn btn-primary  mt-2 btn-registro text-uppercase">
+                Guardar test
+              </button>
+            </div>
+
+            <ng-template #notBtnGuardar>
+              <button type="button" class="ms-2 btn btn-primary  mt-2 btn-registro text-uppercase"
+                [disabled]="this.notBtnGuardar">
+                Espere por favor
+              </button>
+            </ng-template>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>

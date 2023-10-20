@@ -1,0 +1,110 @@
+ <div class="row animated fadeIn fast">
+
+   <div class="col-12">
+     <div class="card p-3">
+
+       <div class="d-flex justify-content-between">
+         <div class="titulos-tabla">
+           <h5 class="p-0">Lista de visitas</h5>
+         </div>
+
+
+
+         <!-- btn-crear-nuevos-usuarios -->
+         <div class="d-flex datos-usuario__back mb-2 mb-lg-0">
+           <div class="">
+             <button printSectionId="htmlDatas" ngxPrint class="btn btn-primary">IMPRIMIR</button>
+           </div>
+           <a [routerLink]="[ '/inicio']" class="btn ml-2 btn-primary text-uppercase"><i class="fa fa-arrow-left"></i>
+             Regresar</a>
+         </div>
+
+       </div>
+       <hr>
+       <div class="card-body pt-0" id="htmlDatas">
+
+         <table style="width: 100%;">
+           <tbody>
+             <tr>
+               <td>
+                 <div class="d-flex justify-content-center">
+                   <img style="width: 95px;" src="../../../assets/dist/img/logo.png" alt="imagen-gadc">
+                 </div>
+               </td>
+               <td class="">
+                 <div>
+                   <p
+                     style="text-align: center; margin-bottom: 0px; text-transform: uppercase; font-size: 15px; margin-top: 5px;">
+                     Gobierno
+                     Autónomo
+                     departamental de Cochabamba
+                   </p>
+
+                 </div>
+                 <div>
+                   <p style="text-align: center; text-transform: uppercase; font-size: 14px; margin-top: 0px;">Lista de
+                     historial de
+                     visitas
+                     al gadc</p>
+                 </div>
+               </td>
+               <td>
+                 <div class="d-flex justify-content-center">
+                   <img style="width: 140px;" src="../../../assets/dist/img/logo-gadc.png" alt="imagen-gadc">
+                 </div>
+               </td>
+             </tr>
+           </tbody>
+         </table>
+
+         <div class="" style="border-top: 1px solid rgb(207, 207, 207);margin-top: 15px; margin-bottom: 20px;">
+         </div>
+         <div class="creacion">
+           <div class="titulos-tabla">
+             <p>Total Cantidad de Visitas: <span class="text-danger"
+                 style="font-size: 1.1rem;">{{ this.dataVisitas.length }}</span>
+             </p>
+           </div>
+
+         </div>
+
+         <!-- Tabla de datos -->
+         <!-- <div *ngIf="!this.cargando" class="fadeIn fast table-shadow"> -->
+         <div class="table-responsive">
+           <table class="table">
+             <thead class="table-header bg-gradient-light">
+               <tr class="table-header__encabezado">
+                 <th style="width: 2%; font-size: 12x; text-align: left;" class="border text-dark">#</th>
+                 <th style="width: 10%; font-size: 12px; text-align: left;" class="border text-dark">Carnet</th>
+                 <th style="width: 15%; font-size: 12px; text-align: left;" class="border text-dark">Nombres</th>
+                 <th style="width: 20%; font-size: 12px; text-align: left;" class="border text-dark">Lugar</th>
+                 <th style="width: 10%; font-size: 12px; text-align: left;" class="border text-dark">Usuario</th>
+                 <th style="width: 10%; font-size: 12px; text-align: left;" class="border text-dark">Fecha Ingreso</th>
+                 <th style="width: 10%; font-size: 12px; text-align: left;" class="border text-dark">Fecha Salida</th>
+               </tr>
+             </thead>
+             <tbody class="table-cuerpo">
+               <tr *ngFor="let item of this.dataVisitas ; let index = index" class=" table-cuerpo__datos">
+                 <td style="font-size: 12px;">{{ index+1 }}</td>
+                 <td style="font-size: 12px;">{{ item.carnet }}</td>
+                 <td style="font-size: 12px;">{{ item.nombres }}</td>
+                 <td style="font-size: 12px;">{{ item.lugar }}</td>
+                 <td style="font-size: 12px;">{{ item.user.nombres }}</td>
+                 <td style="font-size: 12px;">{{ item.created_at | date: 'short' }}</td>
+                 <td style="font-size: 12px;"
+                   *ngIf="item.fecha_salida === null || item.fecha_salida === '' ; else notFechaSalida ">
+                   <span class="text-success">En curso</span>
+                 </td>
+                 <ng-template #notFechaSalida>
+                   <td style="font-size: 12px;">{{ item.fecha_salida | date: 'short' }}</td>
+                 </ng-template>
+               </tr>
+             </tbody>
+           </table>
+         </div>
+         <!-- </div> -->
+         <!-- FIN Tabla de datos -->
+       </div>
+     </div>
+   </div>
+ </div>

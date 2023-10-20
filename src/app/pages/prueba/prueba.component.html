@@ -1,0 +1,254 @@
+<div class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="card p-3">
+      <div class="card-body">
+        <div class="creacion ">
+          <div class="titulos-tabla">
+            <h4>Lista de pruebas</h4>
+            <p>Instituto JAC Bolivia 2000</p>
+          </div>
+
+          <!-- btn-crear-nuevos-usuarios -->
+          <div class="btn-crear-usuario mb-2 mb-lg-0">
+            <button type="button" class="btn btn-primary text-uppercase" data-toggle="modal"
+              data-target="#myModal_crear_servidor" (click)="this.borrarFormulario(formDirective)"><i
+                class="fa fa-plus"></i> Crear nueva prueba</button>
+          </div>
+        </div>
+
+        <!-- Buscar -->
+        <div class="form-group mt-5 d-flex flex-column gap-1">
+          <input type="email" pInputText class="example-full-width p-inputtext-sm" id="buscar"
+            placeholder="Ingrese su busqueda" [(ngModel)]="this.searchTerm" #texto
+            (keyup)="searchTerm$.next(texto.value)">
+        </div>
+
+
+        <!-- Tabla de datos -->
+        <!-- <div *ngIf="!this.cargando" class="fadeIn fast table-shadow"> -->
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="table-header">
+              <tr class="table-header__encabezado">
+                <th style="width: 2%;">Codigo</th>
+                <th style="width: 30%;">Nombre prueba</th>
+                <th style="width: 30%;">Enlace de test</th>
+                <th style="width: 15%;">Fecha registro</th>
+                <th style="width: 10%;">Estado</th>
+                <th style="width: 10%;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody class="table-cuerpo">
+              <tr
+                *ngFor="let item of this.dataServidores | paginate: { itemsPerPage: this.per_page, currentPage: this.p, totalItems:this.total, id: 'paginate_one' }"
+                class=" table-cuerpo__datos">
+                <td>{{ item.id }}</td>
+                <td>{{ item.prueba }}</td>
+                <td> https://test.jacbolivia2000.com/#/vocacional/{{ item.id }}</td>
+
+                <td>{{ item.created_at| date}}</td>
+                <td>
+                  <span *ngIf="item.estado === 'Habilitado'; else notHabilitado"
+                    class="p-1 bg-success text-white rounded">{{item.estado}}</span>
+                  <ng-template #notHabilitado>
+                    <span class="p-1 bg-danger text-white rounded">{{item.estado}}</span>
+                  </ng-template>
+                </td>
+
+                <td class="opciones-prueba">
+                  <a class="text-warning btn-margen puntero custom-link"
+                    (click)="this.modificarServidoresPublicos(item.id)" title="Modificar prueba">
+                    <i class="fas fa-pen"></i>
+                  </a>
+
+                  <a class="text-success btn-margen puntero custom-link"
+                    (click)="this.generarEnlace(item.id, item.estado, item.prueba)" title="Compartir enlace">
+                    <i class="fas fa-share"></i>
+                  </a>
+
+                  <a class="text-indigo btn-margen puntero custom-link"
+                    [routerLink]="[ '/inicio/listaprueba', item.id ]" title="Lista de la prueba">
+                    <i class="fas fa-list"></i>
+                  </a>
+
+                  <a class="text-danger puntero custom-link"
+                    (click)="this.destroyServidorPublico(item.id,item.prueba,item.estado)" title="Dar de baja prueba">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+          <!-- Paginación de datos -->
+          <hr>
+          <div class="paginacion d-flex flex-nowrap justify-content-end pr-3">
+            <pagination-controls class="my-pagination" (pageChange)="this.pageChange($event)" previousLabel="Anterior"
+              nextLabel="Siguiente" [maxSize]="this.per_page" id="paginate_one">
+            </pagination-controls>
+            <p class="pt-1 paginacion__cantitems">Items: {{ this.total }}</p>
+          </div>
+        </div>
+        <!-- </div> -->
+        <!-- FIN Tabla de datos -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal crear nuevos usuarios -->
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;"
+  aria-hidden="true" id="myModal_crear_servidor">
+
+  <form #formDirective="ngForm" [formGroup]="this.formulario" class="ps-4 pt-4 pe-4 pb-0" (ngSubmit)="submit()">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header table-header--modal contenedor-header">
+          <h5 class="modal-title text-white text-uppercase" id="myLargeModalLabel">Añadir prueba</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+
+          <!-- Seccion 1 -->
+          <div class="row">
+
+            <div class="col-12">
+
+              <!-- Nombre prueba -->
+              <div class="form-group d-flex flex-column gap-1">
+                <label for="prueba">Nombre prueba:<span class="text-danger">*</span></label>
+                <input type="text" pInputText class="p-inputtext-sm" id="prueba" placeholder="Ingrese un nombre de test"
+                  formControlName="prueba">
+                <!-- Validacion -->
+                <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                <span *ngIf="this.prueba?.invalid && (this.prueba?.dirty || this.prueba?.touched)" class="texto-tam">
+                  <!-- Errores con expresiones regulares -->
+                  <div *ngIf="this.prueba?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                    Este campo es requerido.
+                  </div>
+
+                  <div *ngIf="this.prueba?.hasError('maxlength')" class="animated fadeIn fast text-danger" id="">
+                    Este campo solo acepta solo 70 letras.
+                  </div>
+                </span>
+              </div>
+
+            </div>
+
+
+          </div>
+
+          <p class="text-right mt-1 mb-0">Los campos con ( <span class="text-danger">*</span> ) son obligatorios</p>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left text-upercase"
+            data-dismiss="modal">Cancelar</button>
+          <div *ngIf="this.btnSave; else notBtnSave">
+            <button type="submit" class="ms-2 btn btn-primary waves-effect text-uppercase"
+              [disabled]="this.formulario.invalid">
+              Guardar
+            </button>
+          </div>
+
+          <ng-template #notBtnSave>
+            <button type="submit" class="ms-2 btn btn-primary waves-effect text-uppercase" [disabled]="this.notBtnSave">
+              <span class="ms-2">Espere por favor</span>
+            </button>
+          </ng-template>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+  </form>
+  <!-- /.modal-dialog -->
+</div>
+<!-- Fin Modal crear usuarios -->
+
+<!-- Modal editar usuarios -->
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;"
+  aria-hidden="true" id="myModal_editar_usuario">
+  <form #formDirective="ngForm" [formGroup]="this.formularioModificar" class="ps-4 pt-4 pe-4 pb-0"
+    (ngSubmit)="submitModificar()">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-danger contenedor-header">
+          <h5 class="modal-title text-white text-uppercase" id="myLargeModalLabel">Modificar prueba</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        </div>
+        <div class="modal-body">
+          <!-- Seccion 1 -->
+          <div class="row">
+
+            <div class="col-12">
+
+              <!-- Nombre prueba -->
+              <div class="form-group d-flex flex-column gap-1">
+                <label for="pruebaM">Prueba:<span class="text-danger">*</span></label>
+                <input type="text" pInputText class="p-inputtext-sm" id="pruebaM"
+                  placeholder="Ingrese un nombre de test" formControlName="pruebaM">
+                <!-- Validacion -->
+                <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                <span *ngIf="this.pruebaM?.invalid && (this.pruebaM?.dirty || this.pruebaM?.touched)" class="texto-tam">
+                  <!-- Errores con expresiones regulares -->
+                  <div *ngIf="this.pruebaM?.hasError('required')" class="animated fadeIn fast text-danger" id="">
+                    Este campo es requerido.
+                  </div>
+
+                  <div *ngIf="this.pruebaM?.hasError('maxlength')" class="animated fadeIn fast text-danger" id="">
+                    Este campo solo acepta solo 70 letras.
+                  </div>
+                </span>
+              </div>
+
+
+              <!-- Select estado -->
+              <div class="form-group d-flex flex-column gap-1">
+
+                <label for="estadoM">Seleccione un estado:<span class="text-danger">*</span></label>
+                <!-- En tu template HTML -->
+                <p-dropdown [style]="{ 'width': '100%' }" class="p-inputtext-sm" [options]="this.estados"
+                  formControlName="estadoM">
+                </p-dropdown>
+
+                <!-- Validacion -->
+                <!-- Preguntamos si es invalido y si esta sucio o a sido tocado -->
+                <span *ngIf="this.estadoM?.invalid && (this.estadoM?.dirty || this.estadoM?.touched)" class="texto-tam">
+                  <!-- Errores con expresiones regulares -->
+                  <div *ngIf="this.estadoM?.hasError('required')" class="animated fadeIn fast text-danger">
+                    Este campo es requerido.
+                  </div>
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+          <p class="text-right mt-1 mb-0">Los campos con ( <span class="text-danger">*</span> ) son obligatorios</p>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cancelar</button>
+          <div *ngIf="this.btnSave; else notBtnSave" class="">
+            <button type="submit" class="ms-2 btn btn-primary waves-effect"
+              [disabled]="this.formularioModificar.invalid">
+              Guardar
+            </button>
+          </div>
+
+          <ng-template #notBtnSave>
+            <button type="submit" class="ms-2 btn btn-primary waves-effect" [disabled]="this.notBtnSave">
+              <span class="ms-2">Espere por favor</span>
+            </button>
+          </ng-template>
+        </div>
+
+        <!-- /.modal-content -->
+      </div>
+    </div>
+  </form>
+  <!-- /.modal-dialog -->
+</div>
+<!-- Fin modal editar usuarios -->

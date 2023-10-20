@@ -1,0 +1,163 @@
+<div class="row animated fadeIn fast">
+  <div class="col-12">
+    <div class="p-3">
+      <div class="">
+        <div class="creacion">
+          <div class="titulos-tabla">
+            <h4>Calificación de Test Vocacional</h4>
+            <p>Instituto JAC Bolivia 2000</p>
+          </div>
+
+          <!-- btn-crear-nuevos-usuarios -->
+          <div class="btn-crear-usuario mb-2 mb-lg-0">
+            <button type="button" class="btn btn-danger text-uppercase ml-2"
+              [routerLink]="[ '/inicio/listaprueba', this.idBack ]"><i class="fas fa-chevron-left"></i>
+              Regresar</button>
+          </div>
+        </div>
+        <hr>
+        <button (click)="pdf()" class="btn btn-success">Descargar PDF</button>
+        <div class="row mt-3">
+          <div class="col-12 col-lg-7">
+            <div class="pl-md-4 pr-md-4 pt-md-1 pb-md-1 ">
+              <div class="card-header bg-jac titulo-jac">
+                <img class="img-jac" src="../../../assets/dist/img/imgjac.png" alt="Logo Jac-Bolivia">
+                <p class="text-white mt-3 text-center">Avenida San Martin Esquina Brasil, Edificio Pruber 901 2do Piso.
+                  <br> Ciudad Cochabamba Bolivia</p>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12 ">
+                    <h3 class="display-personalizado text-primary">¡Felicidades!
+                      <span class="text-felicidades">{{ this.datosEstudiante?.nombres }}</span></h3>
+                    <hr>
+                    <p class="text-uppercase mb-0 text-center">Test de orientación vocacional chaside</p>
+                    <p class="text-center mb-4">Instituto Tecnico Superior JAC Bolivia 2000</p>
+
+                    <div class="row">
+                      <div class="col-12">
+                        <canvas baseChart class="chart" [data]="barChartData" [options]="barChartOptions"
+                          [plugins]="barChartPlugins" [type]="barChartType" (chartClick)="chartClicked($event)">
+                        </canvas>
+                      </div>
+                    </div>
+
+
+                    <!-- <button mat-button mat-raised-button color="primary" (click)="randomize()">
+                      Update
+                    </button> -->
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <p class="mb-0">Tu test de orientación vocacional ha finalizado y segun los resultados tus intereses
+                      estan
+                      relacionados con:</p>
+                    <p class="text-primary" [innerHTML]="this.datosEstudiante?.carrera_bd"></p>
+                    <p>Es decir que tus intereses y aptitudes son:</p>
+
+                    <div class="interes-aptitud">
+                      <div class="intereses">
+                        <p class="text-uppercase text-primary">Intereses</p>
+                        <p [innerHTML]="this.datosEstudiante?.intereses_bd"></p>
+                      </div>
+
+                      <div class="aptitudes">
+                        <p class="text-uppercase text-primary">Aptitudes</p>
+                        <p [innerHTML]="this.datosEstudiante?.aptitudes_bd"></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <p>Tomando en cuenta tu intereses y aptitudes las carreras que podrias desempeñar són:</p>
+                    <p [innerHTML]="this.datosEstudiante?.carreras_aptas_bd"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer text-center">
+                TEST DE ORIENTACIÓN VOCACIONAL JAC BOLIVIA 2000
+              </div>
+            </div>
+
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<table [hidden]="this.pdfShow" style="table-layout: fixed; width: 940px;">
+  <tbody>
+    <tr>
+      <td style="width: 940px;">
+        <div class="pl-md-4 pr-md-4 pt-md-1 pb-md-1" id="canvas">
+          <div class="card-header bg-jac titulo-jac">
+            <img class="img-jac" src="../../../assets/dist/img/imgjac.png" alt="Logo Jac-Bolivia">
+            <p class="text-white mt-3 text-center">Avenida San Martin Esquina Brasil, Edificio Pruber 901 2do Piso.
+              <br> Ciudad Cochabamba Bolivia</p>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 ">
+                <h3 class="display-personalizado text-primary">¡Felicidades!
+                  <span class="text-felicidades">{{ this.datosEstudiante?.nombres }}</span></h3>
+                <hr>
+                <p class="text-uppercase mb-0 text-center">Test de orientación vocacional chaside</p>
+                <p class="text-center mb-4">Instituto Tecnico Superior JAC Bolivia 2000</p>
+
+                <div class="row">
+                  <div class="col-12">
+                    <canvas baseChart class="chart" [data]="barChartData" [options]="barChartOptions"
+                      [plugins]="barChartPlugins" [type]="barChartType" (chartClick)="chartClicked($event)">
+                    </canvas>
+                  </div>
+                </div>
+
+
+                <!-- <button mat-button mat-raised-button color="primary" (click)="randomize()">
+                      Update
+                    </button> -->
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-12">
+                <p class="mb-0">Tu test de orientación vocacional ha finalizado y segun los resultados tus intereses
+                  estan
+                  relacionados con:</p>
+                <p class="text-primary" [innerHTML]="this.datosEstudiante?.carrera_bd"></p>
+                <p>Es decir que tus intereses y aptitudes son:</p>
+
+                <div class="interes-aptitud_t">
+                  <div class="intereses">
+                    <p class="text-uppercase text-primary">Intereses</p>
+                    <p [innerHTML]="this.datosEstudiante?.intereses_bd"></p>
+                  </div>
+
+                  <div class="aptitudes">
+                    <p class="text-uppercase text-primary">Aptitudes</p>
+                    <p [innerHTML]="this.datosEstudiante?.aptitudes_bd"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <p>Tomando en cuenta tu intereses y aptitudes las carreras que podrias desempeñar són:</p>
+                <p [innerHTML]="this.datosEstudiante?.carreras_aptas_bd"></p>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer text-center">
+            TEST DE ORIENTACIÓN VOCACIONAL JAC BOLIVIA 2000
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

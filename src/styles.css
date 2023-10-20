@@ -1,0 +1,76 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '~ngx-toastr/toastr';
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+/* @import "toastify-js/src/toastify.css"; */
+
+/* Acelerando las animaciones */
+.fast {
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both
+}
+
+.font-text {
+  font-size: 25px;
+}
+
+
+/* Fin Angular material */
+
+/* Tabla de datos */
+.table-shadow {
+  box-shadow: 0 5px 5px -3px #0003,
+    0 8px 10px 1px #00000024,
+    0 3px 14px 2px #0000001f;
+}
+
+/* FIN Tabla de datos */
+
+
+/* Tolltip */
+/* Estilos base del enlace */
+.custom-link {
+  display: inline-block;
+  position: relative;
+  /* Color del enlace */
+  text-decoration: none;
+}
+
+/* Estilos del tooltip */
+.custom-link::before {
+  content: attr(title);
+  background-color: #333;
+  /* Color de fondo del tooltip */
+  color: #fff;
+  /* Color del texto del tooltip */
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  position: absolute;
+  bottom: 10%;
+  /* Espacio entre el enlace y el tooltip */
+  right: 110%;
+  /* Muestra el tooltip a la izquierda */
+  transform: translatey(-55%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+/* Mostrar el tooltip al pasar el mouse sobre el enlace */
+.custom-link:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* FIN Tolltip */
+
+
+/* html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */

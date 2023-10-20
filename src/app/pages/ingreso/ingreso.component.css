@@ -1,0 +1,194 @@
+/* Angular material*/
+.example-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+  align-items: flex-start;
+}
+
+.example-radio-button {
+  margin: 5px;
+}
+
+::ng-deep .mat-form-field-infix {
+  border-top: 0.32375em solid rgba(0, 0, 0, 0) !important;
+}
+
+table {
+  width: 100%;
+}
+
+
+/* Fin Angular material*/
+
+.btn-margen {
+  margin-bottom: 5px;
+}
+
+@media (min-width: 1354px) {
+  .btn-margen {
+    margin-bottom: 0px;
+    margin-right: 5px;
+  }
+}
+
+
+.table-header {
+  /* background-color: rgb(32, 109, 197); */
+  /* background: rgba(12, 12, 12, 0.87); */
+  color: #FFFFFF !important;
+}
+
+.table-header__encabezado th {
+  font-size: 12px !important;
+  color: #FFFFFF;
+  padding: 15px;
+}
+
+.table-cuerpo__datos {
+  font-size: 14px !important;
+}
+
+.table-cuerpo__datos td {
+  color: rgba(0, 0, 0, .87);
+}
+
+/* Paginación */
+.my-pagination ::ng-deep .ngx-pagination .current {
+  background: rgba(95, 95, 95, 0.87);
+  border-radius: 5px;
+}
+
+.paginacion__cantitems {
+  font-size: 15px;
+  color: rgba(0, 0, 0, .87);
+}
+
+/* Modal registrar */
+.contenedor-header {
+  border-radius: 2.8px;
+}
+
+/* Tabla de datos */
+.table th,
+.table td {
+  vertical-align: inherit;
+}
+
+.texto-tam {
+  font-size: 0.8rem;
+}
+
+/* Sector crear titulo y btn crear usuario */
+.creacion {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 576px) {
+  .creacion {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* FIN Sector crear titulo y btn crear usuario */
+
+.puntero {
+  cursor: pointer;
+}
+
+.table-header--modal {
+  background-color: rgb(32, 109, 197);
+  color: #FFFFFF !important;
+}
+
+.table-header--card {
+  background-color: rgb(32, 109, 197);
+  color: #FFFFFF;
+  text-transform: uppercase;
+}
+
+
+.form-ingreso {
+  margin-left: 18px;
+  margin-right: 18px;
+}
+
+.btn-acciones {
+  display: flex;
+  flex-direction: column;
+  max-width: 60px
+}
+
+.btn-acciones--margen {
+  margin-top: 5px;
+}
+
+@media (min-width: 1288px) {
+  .btn-acciones {
+    display: flex;
+    flex-direction: row;
+    max-width: none;
+  }
+
+  .btn-acciones--margen {
+    margin-top: 0px;
+    margin-left: 5px;
+  }
+}
+
+.disabled-link {
+  pointer-events: visible;
+  /* Evitar interacción con el enlace */
+  opacity: 0.3;
+  /* Reducir la opacidad para indicar deshabilitación */
+  cursor: not-allowed;
+
+  /* Cambiar el cursor a "no permitido" */
+  /* Otros estilos de deshabilitación, como cambio de color de fondo, texto, etc. */
+}
+
+.textsuccess {
+  color: #28a745;
+}
+
+.textdanger {
+  color: #dc3545;
+}
+
+.save-datos {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.btn-save {
+  margin-left: 5px;
+
+}
+
+@media (min-width: 1430px) {
+  .save-datos {
+    justify-content: space-between;
+    flex-direction: row;
+  }
+
+  .btn-save {
+    margin-left: 5px;
+    margin-top: 0px;
+  }
+}
+
+.btn-guardar-cancelar {
+  display: flex;
+  flex-direction: row;
+  margin-top: 7px;
+  justify-content: flex-end;
+}
+
+@media (min-width: 1430px) {
+  .btn-guardar-cancelar {
+    margin-top: 0px;
+  }
+}

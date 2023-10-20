@@ -1,0 +1,12 @@
+.main-header {
+  border-bottom: none !important;
+}
+
+.puntero {
+  cursor: pointer;
+}
+
+.table-header--modal {
+  background-color: rgb(32, 109, 197);
+  color: #FFFFFF !important;
+}
