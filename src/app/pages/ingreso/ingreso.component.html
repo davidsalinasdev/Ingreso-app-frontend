@@ -334,8 +334,8 @@
           <div class="form-group d-flex flex-column gap-1">
             <!-- <label for="buscar">Buscar:</label> -->
             <input type="email" pInputText class="example-full-width p-inputtext-sm" id="buscar"
-              placeholder="Ingrese su busqueda" [(ngModel)]="this.searchTerm" #texto
-              (keyup)="searchTerm$.next(texto.value)">
+              placeholder="Ingrese su busqueda" [(ngModel)]="this.searchTerm" #textonormal
+              (keyup)="searchTerm$.next(textonormal.value)">
           </div>
 
           <!-- Loading -->

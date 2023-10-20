@@ -88,6 +88,7 @@ export class IngresoComponent implements OnInit {
 
   // Mejorar el performance de la busqueda
   private OnDestroy$ = new Subject();
+  private OnDestroyNormal$ = new Subject();
   public searchTerm$ = new Subject<string>();
   public searchTermCarnet$ = new Subject<string>();
 
@@ -517,18 +518,22 @@ export class IngresoComponent implements OnInit {
     this.searchTerm$.pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      takeUntil(this.OnDestroy$)
+      takeUntil(this.OnDestroyNormal$)
     )
-      .subscribe(texto => {
+      .subscribe(textonormal => {
 
-        localStorage.setItem('textoBuscar', texto);
+        console.log('textonormal');
+        console.log(textonormal);
 
-        if (texto.length === 0) {
+
+        localStorage.setItem('textoBuscar', textonormal);
+
+        if (textonormal.length === 0) {
           this.indexVisitas();
           localStorage.removeItem('textoBuscar');
         } else {
           const formData: { visitante: string } = {
-            visitante: texto
+            visitante: textonormal
           }
           this.cargando = true;
           this.visitasServices.searchVisitas(formData)
@@ -587,6 +592,9 @@ export class IngresoComponent implements OnInit {
       takeUntil(this.OnDestroy$)
     )
       .subscribe(texto => {
+
+        console.log('SubmitSearchCarnet');
+
 
         if (texto.length === 0) {
           this.dataHistorialReal = [];
@@ -701,7 +709,6 @@ export class IngresoComponent implements OnInit {
     this.cargando = true;
     this.p = event;
 
-    console.log(this.p);
 
     if (this.p === 1) {
       this.contadorIngreso = 1;
