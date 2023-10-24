@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 
-import { FormBuilder, FormGroup, FormGroupDirective, Validators, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormGroupDirective, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
 // Servicios
@@ -49,6 +49,7 @@ export interface RolUsuario {
   styleUrls: ['./ingreso.component.css']
 })
 export class IngresoComponent implements OnInit {
+  @ViewChild('formDirective') formDirective!: NgForm; // Asegúrate de importar NgForm
 
   // Información de usuario de sistema
   public usuario: any;
@@ -87,7 +88,7 @@ export class IngresoComponent implements OnInit {
   public cargando: boolean = true;
 
   // Mejorar el performance de la busqueda
-  private OnDestroy$ = new Subject();
+  private OnDestroyCarnet$ = new Subject();
   private OnDestroyNormal$ = new Subject();
   public searchTerm$ = new Subject<string>();
   public searchTermCarnet$ = new Subject<string>();
@@ -131,6 +132,8 @@ export class IngresoComponent implements OnInit {
   public anio!: number;
 
   public contadorIngreso: number = 1;
+
+  public mostrarBtn: boolean = true;
 
   constructor(
     private router: Router,
@@ -226,7 +229,7 @@ export class IngresoComponent implements OnInit {
   /**
    * Registrar nuevo usuario
    */
-  public submit() {
+  public submit(formDirective: FormGroupDirective) {
 
     this.btnSave = false;
     this.cargando = true;
@@ -249,7 +252,8 @@ export class IngresoComponent implements OnInit {
             this.dataHistorialReal = [];
             this.color = false;
             this.visitasRegistradas = '';
-            this.formulario.reset();
+            // this.formulario.reset();
+            formDirective.resetForm();
             this.searchTerm = '';
             Swal.fire({
               position: 'top-end',
@@ -516,7 +520,7 @@ export class IngresoComponent implements OnInit {
 
     // this.cargandoBuscar = true;
     this.searchTerm$.pipe(
-      debounceTime(500),
+      debounceTime(200),
       distinctUntilChanged(),
       takeUntil(this.OnDestroyNormal$)
     )
@@ -587,13 +591,14 @@ export class IngresoComponent implements OnInit {
 
     // this.cargandoBuscar = true;
     this.searchTermCarnet$.pipe(
-      debounceTime(500),
+      debounceTime(200),
       distinctUntilChanged(),
-      takeUntil(this.OnDestroy$)
+      takeUntil(this.OnDestroyCarnet$)
     )
       .subscribe(texto => {
 
         console.log('SubmitSearchCarnet');
+        console.log(texto);
 
 
         if (texto.length === 0) {
@@ -609,20 +614,22 @@ export class IngresoComponent implements OnInit {
                 this.dataHistorialReal = historialreal;
 
                 if (this.dataHistorialReal.length === 0) {
-                  this.visitasRegistradas = 'No tiene visitas registradas'
+                  this.visitasRegistradas = 'No tiene visitas registradas';
+                  this.formulario.get('nombres')!.setValue('');
+                  this.formulario.get('lugar')!.setValue('');
                   this.color = false;
+                  this.mostrarBtn = false;
                 } else {
                   this.visitasRegistradas = 'Tiene visitas registradas'
                   this.color = true;
                   this.formulario.patchValue({
                     nombres: this.dataHistorialReal[0].nombres
                   });
+                  this.mostrarBtn = false;
+                  if (this.dataHistorialReal[0].fecha_salida === null) {
+                    this.mostrarBtn = true;
+                  }
 
-                  // const lugarFieldElement = document.getElementById('lugar');
-
-                  // if (lugarFieldElement) {
-                  //   lugarFieldElement.focus();
-                  // }
                 }
 
 
@@ -669,6 +676,8 @@ export class IngresoComponent implements OnInit {
           timer: 1500
         })
 
+        this.formulario.reset();
+        this.dataHistorialReal = [];
 
       }, (err) => {
         console.log(err);
